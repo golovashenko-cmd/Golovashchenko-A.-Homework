@@ -31,7 +31,7 @@ Most of our work will take place in tests.py.
 # It should instantiate a new ShoppingCart object and assign it to an instance variable called self.cart. 
 # Your tests can then use self.cart to reference your instance of the ShoppingCart class.
 
-Python
+
 
 """
 Project: Sam's Surf Shop
@@ -47,14 +47,52 @@ The shopping cart software for Sam’s Surf Shop lives inside of the file called
 Most of our work will take place in tests.py.
 """
 
+# --- Shopping Cart Software (surfshop.py logic) ---
+#
+# class TooManyBoardsError(Exception):
+#     pass
+#
+# class CheckoutDateError(Exception):
+#     pass
+#
+# class ShoppingCart:
+#     def __init__(self):
+#         self.num_surfboards = 0
+#         self.checkout_date = None
+#         self.locals_discount = False
+#
+#     def add_surfboards(self, quantity=1):
+#         if self.num_surfboards + quantity > 4:
+#             raise TooManyBoardsError
+#         else:
+#             self.num_surfboards += quantity
+#             suffix = '' if quantity == 1 else 's'
+#             return f'Successfully added {quantity} surfboard{suffix} to cart!'
+#
+#     def set_checkout_date(self, date):
+#         if date <= datetime.datetime.now():
+#             raise CheckoutDateError
+#         else:
+#             self.checkout_date = date
+#
+#     def apply_locals_discount(self):
+#         # BUG: This should set self.locals_discount to True
+#         pass
+
+
+
+# --- Create your tests ---
+
+# 1. Let’s get some basic setup out of the way. 
+# First, import both the surfshop and unittest modules in tests.py.
+
 import unittest
-import surfshop
 import datetime
 
-# --- Shopping Cart Software (surfshop.py logic) ---
-
 class TooManyBoardsError(Exception):
-    pass
+    def __str__(self):
+        msg = 'Cart cannot have more than 4 surfboards in it!'
+        return msg
 
 class CheckoutDateError(Exception):
     pass
@@ -64,6 +102,7 @@ class ShoppingCart:
         self.num_surfboards = 0
         self.checkout_date = None
         self.locals_discount = False
+        # 11 I changed True to False
 
     def add_surfboards(self, quantity=1):
         if self.num_surfboards + quantity > 4:
@@ -80,20 +119,13 @@ class ShoppingCart:
             self.checkout_date = date
 
     def apply_locals_discount(self):
-        # BUG: This should set self.locals_discount to True
-        pass
-
-# --- Create your tests ---
-
-# 1. Let’s get some basic setup out of the way. 
-# First, import both the surfshop and unittest modules in tests.py.
-
+         self.locals_discount = True
 
 # 2. Next, create a class which will contain all of your tests. 
 # The class can be named whatever you’d like, but it should inherit from unittest.TestCase.
+class SurfTest (unittest.TestCase):
 
-
-# 3. The features you need to test have been implemented in the surfshop.ShoppingCart class. 
+# 3. The features you need to test have been implemented in the surfshop.ShoppingCart class.
 # In order to test the inner workings of a class, you will need to create a new instance of the shopping cart. 
 # Don’t worry - you will handle that in the next tasks! 
 # For now, it’s important that every test has a new ShoppingCart object to work with so that 
@@ -101,29 +133,41 @@ class ShoppingCart:
 # In your class, create a setup fixture that runs before every test. 
 # It should instantiate a new ShoppingCart object and assign it to an instance variable called self.cart. 
 # Your tests can then use self.cart to reference your instance of the ShoppingCart class.
-
+    def setUp(self):
+        self.cart = ShoppingCart()
 
 # 4. It’s time to create your first test! Let’s test the add_surfboards() method of the cart.
 # The ShoppingCart.add_surfboards() method takes an integer as its only argument and updates 
 # the number of surfboards in the cart. Define a test method that calls this function with 
 # an argument of 1 and checks that 'Successfully added 1 surfboard to cart!' is returned.
+    def test_one_surf_add (self):
+        result = self.cart.add_surfboards(1)
+        self.assertEqual(result, 'Successfully added 1 surfboard to cart!')
+
+    def test_two_surf_add (self):
+        result = self.cart.add_surfboards(2)
+        self.assertEqual(result, 'Successfully added 2 surfboards to cart!')
 
 
 # 5. Let’s test another input for the .add_surfboards() method. 
 # Create another test method which calls ShoppingCart.add_surfboards(), but this time, passes 
 # an argument of 2. It should test that the return value is 'Successfully added 2 surfboards to cart!'
 
-
 # 6. The shopping cart has a limit of 4 surfboards per customer. 
 # Create a test to check that a surfshop.TooManyBoardsError (a custom exception) is raised 
 # when ShoppingCart.add_surfboards() is called with an argument of 5.
-
+    @unittest.skip("rule about limit 4 off")
+    def test_many_boards(self):
+        with self.assertRaises(TooManyBoardsError):
+            self.cart.add_surfboards(5)
 
 # 7. The shopping cart has a feature that applies rental discounts for locals called apply_locals_discount(). 
 # When this function is called, it sets the self.locals_discount property to True.
 # Create a test that calls ShoppingCart.apply_locals_discount() and then checks that 
 # ShoppingCart.locals_discount is True.
-
+    def test_apply_local_discount(self):
+        self.cart.apply_locals_discount()
+        self.assertTrue(self.cart.locals_discount)
 
 # --- Run and maintain your tests ---
 
@@ -148,7 +192,7 @@ class ShoppingCart:
 
 # --- Improve the software ---
 
-# 11. Sam has noticed all of your hard work and the fact that your tests found a bug. 
+# 11. done Sam has noticed all of your hard work and the fact that your tests found a bug.
 # You can now start working on the actual shopping cart software!
 # Take a look in surfshop.py. Recall that the ShoppingCart.apply_locals_discount is not 
 # setting the ShoppingCart.locals_discount attribute to True, as it should be. Can you fix it?
