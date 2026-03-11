@@ -4,8 +4,6 @@ You’ve started a position as the lead programmer for the family-style Italian 
 Basta Fazoolin’ with My Heart. The restaurant has been doing fantastically and seen 
 a lot of growth lately. You’ve been hired to keep things organized.
 """
-from os import name
-from symtable import Class
 
 
 # --- Making the Menus ---
@@ -153,7 +151,7 @@ class Business:
 
 
 # 20. Give Business a constructor that takes a name and a list of franchises.
-    def __init__(self, name, list_of_Franchises ):
+    def __init__(self, name, list_of_Franchises):
         self.name = name
         self.list_of_Franchises = list_of_Franchises
 
@@ -161,19 +159,21 @@ class Business:
 # 21. Create the first Business:
 # Name: "Basta Fazoolin' with my Heart"
 # Franchises: [flagship_store, new_installment]
+basta = Business (name = "Basta Fazoolin' with my Heart", list_of_Franchises = [flagship_store, new_installment])
 
 
 # 22. Create the arepas_menu object.
 # Name: 'take_a_arepa'
 # Time: 10am to 8pm
 # Items: {'arepa pabellon': 7.00, 'pernil arepa': 8.50, 'guayanes arepa': 8.00, 'jamon arepa': 7.50}
-
+arepas_menu = Menu (name = "take_a_arepa", start_time= 10, end_time= 20, items= {'arepa pabellon': 7.00, 'pernil arepa': 8.50, 'guayanes arepa': 8.00, 'jamon arepa': 7.50})
 
 # 23. Create the arepas_place franchise.
 # Address: "189 Fitzgerald Avenue"
 # Menus: [arepas_menu]
-
+arepas_place = Franchise (address = "189 Fitzgerald Avenue", list_of_menus= [arepas_menu])
 
 # 24. Create the new Business object.
 # Name: "Take a' Arepa"
 # Franchises: [arepas_place]
+arepa = Business (name = "Take a' Arepa", list_of_Franchises = [arepas_place])
